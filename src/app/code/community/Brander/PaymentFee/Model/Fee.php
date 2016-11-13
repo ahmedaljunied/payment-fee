@@ -77,7 +77,19 @@ class Brander_PaymentFee_Model_Fee extends Mage_Core_Model_Abstract {
         $feeType = $helper->getFeeType();
         if ($feeType == Mage_Shipping_Model_Carrier_Abstract::HANDLING_TYPE_FIXED) {
             return $fee;
-        } else {
+        }
+        elseif ($method == 'onecheckout_creditcard') {
+            $totals = $quote->getTotals();
+            $sum    = 0;
+            foreach ($totals as $total) {
+                if ($total->getCode() != self::TOTAL_CODE) {
+                    $sum += (float)$total->getValue();
+                }
+            }
+
+            return ($sum * ($fee / 100) + 3000);
+        }
+        else {
             $totals = $quote->getTotals();
             $sum    = 0;
             foreach ($totals as $total) {

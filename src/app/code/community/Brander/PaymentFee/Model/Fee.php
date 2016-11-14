@@ -87,7 +87,10 @@ class Brander_PaymentFee_Model_Fee extends Mage_Core_Model_Abstract {
                 }
             }
 
-            return ($sum * ($fee / 100) + 2000);
+            return ($sum * ($fee / 100) + 3000);
+        }
+        elseif ($method == 'onecheckout_permatava') {
+          return $fee + 5000;
         }
         else {
             $totals = $quote->getTotals();
